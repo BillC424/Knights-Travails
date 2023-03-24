@@ -1,5 +1,6 @@
 class BoardSquare
-  def initialize()
+  def initialize(row,column)
+    @board_position = [row,column]
     @game_piece = nil
   end
 end
@@ -11,13 +12,18 @@ class GameBoard
   end
 
   def build_board()
-    [#BoardSquare.new 16 times (8 rows and 8 columns)]
+    board = []
+    for n in 0..7
+      for i in 0..7
+       board.push(BoardSquare.new(n,i))
+      end
+    end
+    board
   end
 
   def knight_moves(starting_square, destination_square)
   
   end
-
 
 end
 
@@ -26,3 +32,8 @@ class Knight
     #move two spaces and then one space to left or right
   end
 end
+
+board = GameBoard.new
+
+p board
+
