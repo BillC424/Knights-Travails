@@ -10,7 +10,7 @@ end
 
 class GameBoard
   def initialize()
-    @board = build_board#determine_adjacent_squares
+    @board = build_board
     @knight = Knight.new
   end
 
@@ -27,6 +27,7 @@ class GameBoard
   def determine_adjacent_squares(board)
     board.each do |board_square|
        board_square.adjacent_squares = first_and_last_rows_adjacent_squares(board_square.board_position) if board_square.board_position[0] == 0 || board_square.board_position[0] == 7
+       p board_square
     end
     board
   end
@@ -42,7 +43,14 @@ class GameBoard
 
   def first_and_last_rows_adjacent_squares(board_square)
     return board_corner_adjacent_squares(board_square) if board_square == [0, 0] || board_square == [7, 0] || board_square == [0, 7] || board_square == [7, 7]
-
+    
+    adjacent_squares = []
+    adjacent_squares.push([board_square[0], board_square[1] - 1 ])
+    adjacent_squares.push([board_square[0] + 1, board_square[1] - 1 ])
+    adjacent_squares.push([board_square[0] + 1, board_square[1] ])
+    adjacent_squares.push([board_square[0] + 1, board_square[1] + 1 ])
+    adjacent_squares.push([board_square[0], board_square[1] + 1 ])
+    adjacent_squares
   end
 
 end
@@ -58,5 +66,3 @@ class Knight
 end
 
 board = GameBoard.new
-
-p board
