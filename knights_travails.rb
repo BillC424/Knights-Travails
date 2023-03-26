@@ -36,6 +36,13 @@ class GameBoard
     board
   end
 
+  def adjacent_square_array_builder(board_square, adjacent_square_positions, adjacent_squares)
+    adjacent_square_positions.each do |square|
+      adjacent_square = [board_square[0] + square[0], board_square[1] + square[1]]
+      adjacent_squares.push(adjacent_square)
+    end
+  end
+
   def board_corner_adjacent_squares(board_square)
    #Left corners
    return [0, 1], [1, 0], [1, 1] if board_square == [0, 0]
@@ -47,13 +54,11 @@ class GameBoard
 
   def first_and_last_rows_adjacent_squares(board_square, adjacent_squares = [])
     return board_corner_adjacent_squares(board_square) if board_square == [0, 0] || board_square == [7, 0] || board_square == [0, 7] || board_square == [7, 7]
-    
-    adjacent_squares.push([board_square[0], board_square[1] - 1 ])
-    adjacent_squares.push([board_square[0] + 1, board_square[1] - 1 ])
-    adjacent_squares.push([board_square[0] + 1, board_square[1] ])
-    adjacent_squares.push([board_square[0] + 1, board_square[1] + 1 ])
-    adjacent_squares.push([board_square[0], board_square[1] + 1 ])
-    adjacent_squares
+    adjacent_square_positions = [ [0,-1], [+1,-1], [+1,0], [+1,+1], [0,+1]
+    ]
+    adjacent_square_array_builder(board_square, adjacent_square_positions, adjacent_squares)
+  adjacent_squares
+   
   end
 
   def middle_rows_edge_squares(board_square)
@@ -64,37 +69,25 @@ class GameBoard
   def middle_rows_edge_first_row(board_square, adjacent_squares = [])
     adjacent_square_positions = [ [-1,0], [-1,+1], [0,+1], [+1,+1], [+1, 0]
     ]
-    adjacent_square_positions.each do |square|
-      adjacent_square = [board_square[0] + square[0], board_square[1] + square[1]]
-      adjacent_squares.push(adjacent_square)
-    end
+    adjacent_square_array_builder(board_square, adjacent_square_positions, adjacent_squares)
     adjacent_squares
   end
 
   def middle_rows_edge_last_row(board_square, adjacent_squares = [])
     adjacent_square_positions = [ [-1,-1], [0,-1], [+1,-1], [+1,0], [-1,0]
     ]
-    adjacent_square_positions.each do |square|
-      adjacent_square = [board_square[0] + square[0], board_square[1] + square[1]]
-      adjacent_squares.push(adjacent_square)
-    end
+    adjacent_square_array_builder(board_square, adjacent_square_positions, adjacent_squares)
     adjacent_squares
   end
 
   def middle_rows_adjacent_squares(board_square, adjacent_squares = [])
     return middle_rows_edge_squares(board_square) if board_square[1] == 0 || board_square[1] == 7
-
     adjacent_square_positions = [ [-1, -1], [0, -1], [1, -1],
     [1, 0],
     [1, 1], [0, 1], [-1, 1],
     [-1, 0]
     ]
-    
-    adjacent_square_positions.each do |square|
-      adjacent_square = [board_square[0] + square[0], board_square[1] + square[1]]
-      adjacent_squares.push(adjacent_square)
-    end
-
+    adjacent_square_array_builder(board_square, adjacent_square_positions, adjacent_squares)
     adjacent_squares
   end
 
