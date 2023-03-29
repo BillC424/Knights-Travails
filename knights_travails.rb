@@ -11,6 +11,8 @@ class BoardSquare
 end
 
 class GameBoard
+  attr_accessor :board, :knight
+
   def initialize
     @board = build_board
     @knight = Knight.new
@@ -33,7 +35,6 @@ class GameBoard
                                       else
                                         middle_rows_adjacent_squares(board_square.board_position)
                                       end
-      p board_square
     end
     board
   end
@@ -55,13 +56,7 @@ class GameBoard
   end
 
   def first_and_last_rows_adjacent_squares(board_square, adjacent_squares = [])
-    return board_corner_adjacent_squares(board_square) if [[0,
-                                                            0], [7,
-                                                                 0], [
-                                                                   0, 7
-                                                                 ], [
-                                                                   7, 7
-                                                                 ]].include?(board_square)
+    return board_corner_adjacent_squares(board_square) if [[0, 0], [7, 0], [0, 7], [7, 7]].include?(board_square)
 
     adjacent_square_positions = [[0, -1], [+1, -1], [+1, 0], [+1, +1], [0, +1]]
     adjacent_square_array_builder(board_square, adjacent_square_positions, adjacent_squares)
@@ -98,8 +93,46 @@ class GameBoard
 end
 
 class Knight
-  def move
+  def moves_from_one_position(starting_square, possible_move_positions = [])
     # move two spaces and then one space to left, right, up, or down
+   # return if board_position[0].negative? || board_position[1].negative? || board_position[0] > 7 || board_position[1] > 7
+   possible_moves = [[-2,-1], [-2,+1], [+2,-1], [+2,+1], [+1,-2], [-1,-2], [+1,+2], [-1,+2]]
+   # down/left  -2,-1
+   # down/right -2,+1
+   possible_moves.each do |move|
+    possible_move_positions.push([starting_square[0] + move[0], starting_square[1] + move[1]])
+  end
+   # up/left +2,-1
+   # up/right +2,+1
+   
+   # left/up +1,-2
+   # left/down -1,-2   
+
+   # right/up +1,+2
+   # right/down -1,+2
+   
+
+   #p board.board[0].game_piece = board.knight
+   possible_move_positions
+  end
+
+  def all_possible_moves(board)
+
+     # down/left  -2,-1
+     # down/right -2,+1
+
+    # up/left +2,-1
+    # up/right +2,+1
+   
+    # left/up +1,-2
+    # left/down -1,-2   
+
+    # right/up +1,+2
+    # right/down -1,+2
+   
+
+   # Do I need to build a tree using recursion that shows the above options?
+    all_possible_moves
   end
 
   def knight_moves(starting_square, destination_square)
@@ -108,3 +141,7 @@ class Knight
 end
 
 board = GameBoard.new
+
+p board.knight.moves_from_one_position([4,4])
+
+#p board
