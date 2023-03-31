@@ -20,7 +20,7 @@ class GameBoard
 
   def build_board
     board = []
-    8.times do |n|
+    8.times do |n|-
       8.times do |i|
         board.push(BoardSquare.new(n, i))
       end
@@ -94,11 +94,7 @@ end
 
 class Knight
   def moves_from_one_position(starting_square, possible_move_positions = [])
-    # move two spaces and then one space to left, right, up, or down
-   # return if board_position[0].negative? || board_position[1].negative? || board_position[0] > 7 || board_position[1] > 7
    possible_moves = [[-2,-1], [-2,+1], [+2,-1], [+2,+1], [+1,-2], [-1,-2], [+1,+2], [-1,+2]]
-   # down/left  -2,-1
-   # down/right -2,+1
    possible_moves.each do |move|
     possible_move = ([starting_square[0] + move[0], starting_square[1] + move[1]])
     possible_move_positions.push(possible_move) unless possible_move.any? { |column_or_row_spot| column_or_row_spot.negative?} ||  possible_move.any? { |column_or_row_spot| column_or_row_spot > 7}
