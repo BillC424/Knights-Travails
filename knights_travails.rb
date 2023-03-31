@@ -100,19 +100,9 @@ class Knight
    # down/left  -2,-1
    # down/right -2,+1
    possible_moves.each do |move|
-    possible_move_positions.push([starting_square[0] + move[0], starting_square[1] + move[1]])
-  end
-   # up/left +2,-1
-   # up/right +2,+1
-   
-   # left/up +1,-2
-   # left/down -1,-2   
-
-   # right/up +1,+2
-   # right/down -1,+2
-   
-
-   #p board.board[0].game_piece = board.knight
+    possible_move = ([starting_square[0] + move[0], starting_square[1] + move[1]])
+    possible_move_positions.push(possible_move) unless possible_move.any? { |column_or_row_spot| column_or_row_spot.negative?} ||  possible_move.any? { |column_or_row_spot| column_or_row_spot > 7}
+   end
    possible_move_positions
   end
 
@@ -140,8 +130,12 @@ class Knight
   end
 end
 
+
+#class 
+
 board = GameBoard.new
 
-p board.knight.moves_from_one_position([4,4])
-
 #p board
+
+p board.knight.moves_from_one_position([1,1])
+
