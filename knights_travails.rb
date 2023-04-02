@@ -100,14 +100,28 @@ class Node
     @subsequent_possible_moves = []
   end
 
-  def add_edge(subsequent_possible_moves)
-    @subsequent_possible_moves << subsequent_possible_moves
+  def add_edge(subsequent_position)
+    @subsequent_position << subsequent_position
   end
 
 end
 
 class AdjacencyList
+  def initialize
+    @nodes = {}
+  end
 
+  def add_node(node)
+    @nodes[node.name] = node
+  end
+
+  def add_edge(predecessor_position, successor_position)
+    @nodes[predecessor_position].add_edge(@nodes[successor_position])
+  end
+
+  def [](name)
+    @nodes[name]
+  end
 end
 
 class Knight
