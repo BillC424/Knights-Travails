@@ -92,33 +92,40 @@ class GameBoard
   end
 end
 
+class Node
+  attr_reader :board_position
+  
+  def initialize(nboard_positioname)
+    @board_position = board_position
+    @subsequent_possible_moves = []
+  end
+
+  def add_edge(subsequent_possible_moves)
+    @subsequent_possible_moves << subsequent_possible_moves
+  end
+
+end
+
+class AdjacencyList
+
+end
+
 class Knight
   def moves_from_one_position(starting_square, possible_move_positions = [])
    possible_moves = [[-2,-1], [-2,+1], [+2,-1], [+2,+1], [+1,-2], [-1,-2], [+1,+2], [-1,+2]]
    possible_moves.each do |move|
     possible_move = ([starting_square[0] + move[0], starting_square[1] + move[1]])
-    possible_move_positions.push(possible_move) unless possible_move.any? { |column_or_row_spot| column_or_row_spot.negative?} ||  possible_move.any? { |column_or_row_spot| column_or_row_spot > 7}
+    possible_move_positions << possible_move unless possible_move.any? { |column_or_row_spot| column_or_row_spot.negative?} ||  possible_move.any? { |column_or_row_spot| column_or_row_spot > 7}
    end
    possible_move_positions
   end
+  
+  
+  def all_possible_moves(starting_square, previous_squares = [], possible_move_positions = [])
+    return if previous_squares.length == 64 || possible_move == previous_square.any?
+    possible_moves = moves_from_one_position(starting_square)
 
-  def all_possible_moves(board)
-
-     # down/left  -2,-1
-     # down/right -2,+1
-
-    # up/left +2,-1
-    # up/right +2,+1
-   
-    # left/up +1,-2
-    # left/down -1,-2   
-
-    # right/up +1,+2
-    # right/down -1,+2
-   
-
-   # Do I need to build a tree using recursion that shows the above options?
-    all_possible_moves
+    all_possible_moves(starting_square, previous_squares = [], possible_move_positions)
   end
 
   def knight_moves(starting_square, destination_square)
