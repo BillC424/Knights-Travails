@@ -93,7 +93,7 @@ class GameBoard
 end
 
 class Node
-  attr_reader :board_position
+  attr_reader :board_position, :subsequent_position
   
   def initialize(board_position)
     @board_position = board_position
@@ -108,7 +108,7 @@ end
 
 class AdjacencyList
 
-  attr_reader :nodes
+  attr_reader :nodes 
 
   def initialize
     @nodes = {}
@@ -129,15 +129,14 @@ end
 
 class Knight
 
+   attr_reader :all_possible_moves_adjacency_list
   def initialize
     @all_possible_moves_adjacency_list = nil
   end
   def moves_from_one_position(starting_square, possible_move_positions = [])
    possible_moves = [[-2,-1], [-2,+1], [+2,-1], [+2,+1], [+1,-2], [-1,-2], [+1,+2], [-1,+2]]
    possible_moves.each do |move|
-    p starting_square
-    p possible_move = ([starting_square[0] + move[0], starting_square[1] + move[1]])
-    p @all_possible_moves_adjacency_list[starting_square]
+    possible_move = ([starting_square[0] + move[0], starting_square[1] + move[1]])
   
     @all_possible_moves_adjacency_list.add_edge(starting_square, possible_move) unless possible_move.any? { |column_or_row_spot| column_or_row_spot.negative?} ||  possible_move.any? { |column_or_row_spot| column_or_row_spot > 7}
    end
@@ -145,13 +144,16 @@ class Knight
   
   
   def all_possible_moves(starting_square, previous_squares = [])
-    return if previous_squares.length == 64 || starting_square == previous_squares.any?
+    return if previous_squares.any? {|square| square == starting_square} ||  previous_squares.length == 64
     @all_possible_moves_adjacency_list = AdjacencyList.new if previous_squares.empty?
     @all_possible_moves_adjacency_list.add_node(starting_square)
     previous_squares << starting_square
     moves_from_one_position(@all_possible_moves_adjacency_list[starting_square].board_position)
+    
+    @all_possible_moves_adjacency_list[starting_square].subsequent_position.each do |possible_move|
+      all_possible_moves(possible_move, previous_squares) 
+    end
 
-    #all_possible_moves(starting_square, previous_squares = [])
   end
 
   def knight_moves(starting_square, destination_square)
@@ -166,7 +168,7 @@ board = GameBoard.new
 
 #p board
 
-p board.knight.all_possible_moves([1,1])
+board.knight.all_possible_moves([3,3])
 
-p board.knight
+p board.knight.all_possible_moves_adjacency_list.nodes
 
