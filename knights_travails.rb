@@ -156,19 +156,35 @@ class Knight
 
   end
 
-  def knight_moves(starting_square, destination_square)
-    # shows the shortest possible way to get from one square to another by outputting all squares the knight will stop on along the way.
+  def knight_moves(starting_square, destination_square, moves = 0)
+      return if moves == 64
+      p moves
+      all_possible_moves(starting_square) if moves == 0
+      #return if @all_possible_moves_adjacency_list.nodes[[starting_square]].subsequent_position[starting_square.index + 1] == nil
+      return p "You made it in #{moves} moves. Here's your path" if starting_square == destination_square
+      
+      left_depth = knight_moves(@all_possible_moves_adjacency_list.nodes[starting_square].subsequent_position[0], destination_square, moves + 1)
+      #right_depth = knight_moves(value, destination_square, moves + 1)
+      #return left_depth || right_depth
   end
 end
 
 
-#class 
 
+#starting square [2,2],
+
+#[0,3]
+#[2,4]
+
+#destination_square [0,5]  
 board = GameBoard.new
 
 #p board
 
-board.knight.all_possible_moves([3,3])
+#p board.knight.all_possible_moves_adjacency_list.nodes
 
-p board.knight.all_possible_moves_adjacency_list.nodes
+board.knight.knight_moves([3,3], [3,1])
+
+#p board.knight.all_possible_moves_adjacency_list.nodes[[3,3]].subsequent_position
+#board.knight.knight_moves
 
