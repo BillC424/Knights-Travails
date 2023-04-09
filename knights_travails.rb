@@ -162,15 +162,44 @@ class Knight
   end
 
   def knight_moves(starting_square, destination_square, previous_squares = [], moves = 0)
-      return if previous_squares.any? {|square| square == starting_square} ||  previous_squares.length == 64 || moves == 64
+      return if previous_squares.length == 64 || moves == 64
       all_possible_moves(starting_square) if moves == 0
       previous_squares << starting_square
       return if starting_square == nil
       return print_knight_moves_path(previous_squares, moves) if starting_square == destination_square
       
-      first_possible_move = knight_moves(@all_possible_moves_adjacency_list.nodes[starting_square].subsequent_position[0], destination_square, previous_squares, moves + 1)
+      @all_possible_moves_adjacency_list[starting_square].subsequent_position.each do |possible_move|
+        p possible_move
+        knight_moves(possible_move, destination_square, previous_squares, moves + 1)
+      end
       #second_possible_move = knight_moves(@all_possible_moves_adjacency_list.nodes[starting_square].subsequent_position[0 + 1], destination_square, moves + 1)
       #return left_depth || right_depth
+  end
+
+  def knight_moves_breadth_first(starting_square, destination_square, queue = [], previous_squares = [], moves = 0)
+    all_possible_moves(starting_square)
+    queue.push(starting_square)
+    while queue.empty? == false
+      
+      level_size = queue.size
+      
+      level_size.times do
+        starting_square = queue[0]
+        p queue
+        p "starting square is #{starting_square}"
+        return print_knight_moves_path(previous_squares, moves) if starting_square == destination_square
+        unless previous_squares.any? {|square| square == starting_square} 
+          @all_possible_moves_adjacency_list[starting_square].subsequent_position.each do |move|
+            queue << move #unless previous_squares.any? {|square| square == starting_square} 
+            p move
+          end
+        end 
+      previous_squares << starting_square
+      queue.shift
+      end
+      moves += 1 
+    end
+   p moves
   end
 end
 
@@ -188,7 +217,7 @@ board = GameBoard.new
 
 #board.knight.all_possible_moves([3,3])
 
-board.knight.knight_moves([3,3], [3,1])
+board.knight.knight_moves_breadth_first([3,3], [7,7])
 
 #p board.knight.all_possible_moves_adjacency_list.nodes[[3,3]].subsequent_position
 #board.knight.knight_moves
