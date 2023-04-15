@@ -39,7 +39,7 @@ class GameBoard
   def adjacent_square_array_builder(board_square, adjacent_square_positions, adjacent_squares)
     adjacent_square_positions.each do |square|
       adjacent_square = [board_square[0] + square[0], board_square[1] + square[1]]
-      adjacent_squares.push(adjacent_square)
+      adjacent_squares << adjacent_square
     end
   end
 
@@ -178,7 +178,7 @@ class Knight
 
   def knight_moves(starting_square, destination_square, queue = [], previous_squares = [], moves = 0)
     all_possible_moves(starting_square)
-    queue.push(starting_square)
+    queue << starting_square
     while queue.empty? == false
 
       level_size = queue.size
