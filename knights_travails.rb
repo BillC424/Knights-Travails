@@ -131,7 +131,7 @@ class Knight
     @all_possible_moves_adjacency_list = nil
   end
 
-  def moves_from_one_position(starting_square, _possible_move_positions = [])
+  def moves_from_one_position(starting_square)
     possible_moves = [[-2, -1], [-2, +1], [+2, -1], [+2, +1], [+1, -2], [-1, -2], [+1, +2], [-1, +2]]
     possible_moves.each do |move|
       possible_move = [starting_square[0] + move[0], starting_square[1] + move[1]]
